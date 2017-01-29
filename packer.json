@@ -1,0 +1,65 @@
+{
+  "variables": {
+    "aws_access_key_id": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_access_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_session_token": "{{env `AWS_SESSION_TOKEN`}}",
+    "time_zone": "{{env `TIME_ZONE`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key_id`}}",
+      "secret_key": "{{user `aws_secret_access_key`}}",
+      "token": "{{user `aws_session_token`}}",
+      "region": "us-west-2",
+      "source_ami": "ami-5b6dde3b",
+      "instance_type": "t2.micro",
+      "ssh_username": "ec2-user",
+      "associate_public_ip_address": "true",
+      "ami_name": "docker-production-aws-ecs-base {{timestamp}}",
+      "tags": {
+        "Name": "Docker Production AWS ECS Base Image",
+        "SourceAMI": "ami-5b6dde3b",
+        "DockerVersion": "1.12.6",
+        "ECSAgentVersion": "1.13.1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/configure-timezone.sh",
+      "environment_vars": [
+        "TIME_ZONE={{user `time_zone`}}"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/set-docker-options.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-os-packages.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/cloud-init-options.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/cleanup.sh"
+    },
+    {
+      "type": "file",
+      "source": "files/firstrun.sh",
+      "destination": "/home/ec2-user/firstrun.sh"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json",
+      "strip_path": true
+    }
+  ]
+}
