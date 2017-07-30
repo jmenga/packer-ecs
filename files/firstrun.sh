@@ -3,6 +3,9 @@ set -e
 
 # Configure ECS Agent
 echo "ECS_CLUSTER=${ECS_CLUSTER}" > /etc/ecs/ecs.config
+if [ -n $ECS_INSTANCE_ATTRIBUTES ]; then
+  echo "ECS_INSTANCE_ATTRIBUTES=${ECS_INSTANCE_ATTRIBUTES}" >> /etc/ecs/ecs.config
+fi
 
 # Set HTTP Proxy URL if provided
 if [ -n $PROXY_URL ]; then
@@ -45,13 +48,13 @@ log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%S.%f
 
 [/var/log/ecs/ecs-init.log]
-file = /var/log/ecs/ecs-init.log.*
+file = /var/log/ecs/ecs-init.log*
 log_group_name = ${STACK_NAME}/ec2/${AUTOSCALING_GROUP}/var/log/ecs/ecs-init
 log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 
 [/var/log/ecs/ecs-agent.log]
-file = /var/log/ecs/ecs-agent.log.*
+file = /var/log/ecs/ecs-agent.log*
 log_group_name = ${STACK_NAME}/ec2/${AUTOSCALING_GROUP}/var/log/ecs/ecs-agent
 log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
