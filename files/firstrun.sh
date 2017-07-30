@@ -45,13 +45,13 @@ log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%S.%f
 
 [/var/log/ecs/ecs-init.log]
-file = /var/log/ecs/ecs-init.log*
+file = /var/log/ecs/ecs-init.log.*
 log_group_name = ${STACK_NAME}/ec2/${AUTOSCALING_GROUP}/var/log/ecs/ecs-init
 log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 
 [/var/log/ecs/ecs-agent.log]
-file = /var/log/ecs/ecs-agent.log*
+file = /var/log/ecs/ecs-agent.log.*
 log_group_name = ${STACK_NAME}/ec2/${AUTOSCALING_GROUP}/var/log/ecs/ecs-agent
 log_stream_name = {instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
