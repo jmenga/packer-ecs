@@ -19,9 +19,9 @@
       "ami_name": "docker-production-aws-ecs-base {{timestamp}}",
       "tags": {
         "Name": "Docker Production AWS ECS Base Image",
-        "SourceAMI": "ami-5b6dde3b",
-        "DockerVersion": "1.12.6",
-        "ECSAgentVersion": "1.13.1"
+        "SourceAMI": "ami-57d9cd2e",
+        "DockerVersion": "17.03.1-ce",
+        "ECSAgentVersion": "1.14.3-1"
       }
     }
   ],
@@ -32,10 +32,6 @@
       "environment_vars": [
         "TIME_ZONE={{user `time_zone`}}"
       ]
-    },
-    {
-      "type": "shell",
-      "script": "scripts/set-docker-options.sh"
     },
     {
       "type": "shell",

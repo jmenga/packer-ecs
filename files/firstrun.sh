@@ -8,13 +8,21 @@ if [ -n $ECS_INSTANCE_ATTRIBUTES ]; then
 fi
 
 # Set HTTP Proxy URL if provided
-if [ -n $PROXY_URL ]; then
+if [ -n $PROXY_URL ]
+then
   echo export HTTPS_PROXY=$PROXY_URL >> /etc/sysconfig/docker
   echo HTTPS_PROXY=$PROXY_URL >> /etc/ecs/ecs.config
   echo NO_PROXY=169.254.169.254,/var/run/docker.sock >> /etc/ecs/ecs.config
   echo HTTP_PROXY=$PROXY_URL >> /etc/awslogs/proxy.conf
   echo HTTPS_PROXY=$PROXY_URL >> /etc/awslogs/proxy.conf
   echo NO_PROXY=169.254.169.254 >> /etc/awslogs/proxy.conf
+fi
+
+# Enable docker host networking mode if DOCKER_NETWORK_MODE is set to "host"
+if [ $DOCKER_NETWORK_MODE = "host" ]
+then
+  sudo sed -i -e "s|^\(OPTIONS=\".*\)\"$|\1 --bridge=none --ip-forward=false --ip-masq=false --iptables=false\"|" \
+    /etc/sysconfig/docker
 fi
 
 # Write AWS Logs region
