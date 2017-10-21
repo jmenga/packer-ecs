@@ -19,9 +19,9 @@
       "ami_name": "docker-production-aws-ecs-base {{timestamp}}",
       "tags": {
         "Name": "Docker Production AWS ECS Base Image",
-        "SourceAMI": "ami-57d9cd2e",
-        "DockerVersion": "17.03.1-ce",
-        "ECSAgentVersion": "1.14.3-1"
+        "SourceAMI": "ami-29f80351",
+        "DockerVersion": "17.03.2-ce",
+        "ECSAgentVersion": "1.14.5"
       }
     }
   ],
